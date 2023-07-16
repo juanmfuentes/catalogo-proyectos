@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-4">
+    <h1>Registrar Proyectos</h1>
+    {% if show_confirm_message %}
+    <div id="confirmMessage" class="p-4">
+        <p>¿Estás listo para crear un proyecto?</p>
+        <button id="confirmBtn" class="btn btn-success">Sí, estoy listo</button>
+    </div>
+    {% endif %}
+
+    {% if show_success_message %}
+    <div class="alert alert-success">
+        Proyecto registrado correctamente.
+        ¿Deseas realizar otro registro?
+        <a href="{% url 'empresa_crear_proyecto' %}">Sí</a> /
+        <a href="{% url 'empresa_proyectos' %}">No</a>
+    </div>
+    {% endif %}
+
+    <div id="formContainer" {% if show_confirm_message %}style="display: none;" {% endif %} class="p-4">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row container">
+                {{ form.periodo.label_tag }} {{ form.periodo }}
+                {{ form.año.label_tag }} {{ form.año }}
+                {{ form.vacantes.label_tag }} {{ form.vacantes }}
+                {{ form.modalidad.label_tag }} {{ form.modalidad }}
+                {{ form.nombre.label_tag }} {{ form.nombre }}
+                {{ form.objetivo.label_tag }} {{ form.objetivo }}
+                {{ form.justificacion.label_tag }} {{ form.justificacion }}
+                {{ form.asesor.label_tag }} {{ form.asesor }}
+                {{ form.id_programa_educativo.label_tag }} {{ form.id_programa_educativo }}
+                {{ form.id_proceso.label_tag }} {{ form.id_proceso }}
+                <input type="hidden" name="id_empresa" value="{{ request.user.empresa.id }}">
+            </div>
+            <button type="submit" class="btn btn-success">Registrar Proyecto</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("confirmBtn").addEventListener("click", function () {
+        document.getElementById("confirmMessage").style.display = "none";
+        document.getElementById("formContainer").style.display = "block";
+    });
+</script>
+{% endblock %}
